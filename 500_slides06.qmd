@@ -10,12 +10,113 @@ format:
     fig-align: center
 ---
 
-## Today's Agenda
+## What's in these Slides?
 
+- Matching Approaches and Austin 2014 (also in Slides Set 5)
+- Feinstein's Model for Research Architecture (also in Slides Set 5)
 - Designing Observational Studies (Rubin, 2001)
 - Discussion of Rosenbaum Chapters 5 and 6
 - Discussion of Project Proposals
-- Discussion of Kubo et al. (2020)
+
+# Matching Approaches (discussion built on Austin, 2014)
+
+## 1:1 Greedy Matching
+
+Greedy (or nearest neighbor) matching selects a treated subject and then selects as a matched control subject the untreated subject whose propensity score is closest to that of the treated subject. If multiple untreated subjects are equally close to the treated subject, one of these untreated subjects is selected at random, typically. Options include:
+
+1. Select treated subjects from highest to lowest propensity score.
+2. Select treated subjects from lowest to highest propensity score.
+3. Select sequentially treated subjects in the order of the best possible match. 
+    - First treated subject is the one who is closest to an untreated subject. 
+    - Second treated subject is the one closest to the remaining untreated, etc.
+4. Select treated subjects in a random order. Set a fixed random number seed so that the matched sample is reproducible in subsequent analyses.
+
+Results in all treated subjects being matched to a single control.
+
+## Greedy Matching with Replacement
+
+Matching *without* replacement means that once an untreated subject has been matched to a treated subject that untreated subject is no longer eligible for further matches to other treated subjects. As a result, each subject can be in at most one matched pair.
+
+Now, in matching *with* replacement, we allow members of the "control" pool to be reused in the matching process.
+
+- The process is somewhat simpler in the nearest neighbor case - just match each treated subject to the closest untreated subject.
+- Because untreated subjects are recycled and thus can be included in multiple matched sets, the order in which the treated subjects are selected has no effect on the formation of matched pairs.
+
+## Matching 1:k rather than 1:1
+
+Here, we simply try to obtain the k best matching untreated subjects for each treated subject.
+
+- In greedy matching, it is certainly possible that the quality of matches will drop considerably with extra matches, especially near the edges of the distribution of the propensity score.
+- 1:k matching is occasionally done with replacement, but of course we still want k unique matched untreated subjects for each treated subject.
+
+## Caliper Matching
+
+Match subjects only if they fall within a pre-specified maximum distance (the caliper distance.)
+
+- When using caliper matching, we usually match subjects on the logit of the propensity score using a caliper width as a proportion of the standard deviation of the logit of the propensity score.
+- Caliper matching can be combined with other distance metrics (where, for example, a few specific covariates are targeted for more precise matching.)
+- Matching with a caliper can be accomplished with or without replacement, and in 1:1 or 1:k settings.
+
+## Optimal Matching
+
+The main distinction that matters is between optimal matching approaches and nearest-neighbor (greedy) matching approaches.
+
+- Optimal matching forms matched pairs so as to minimize the average within-pair difference in propensity scores.
+- Optimal matching is rarely the first way I run an analysis (it's a bit slow, especially with large matching problems) but this problem is disappearing as smarter people and more effective computers emerge.
+
+## Double Robust Approaches 
+
+Nothing is stopping us from using regression adjustment along with matching. It's not unusual to consider the incorporation of the linear propensity score, or an important set of prognostic covariates in a setting where we are analyzing propensity-matched subjects.
+
+## Peter Austin's (2014) Comparison
+
+![](c05/figures/austin_1.png){width=90%}
+
+- You'll find this article on [our Sources page](https://github.com/THOMASELOVE/500-classes-2023/tree/main/sources).
+
+## Austin's conclusions re: 12 Algorithms
+
+- Larger numbers of matched pairs (from complete optimal or complete greedy matches) yields more precise estimates than smaller numbers of matched pairs (say, when a caliper is used and only some treated subjects are matched.)
+- Caliper matching often yields better "balance" and less biased estimates as compared to other algorithms.
+- So we have a bias - variance tradeoff in our estimation strategies, but in terms of MSE, caliper matching usually performs pretty well.
+- In terms of ordering of treated subjects for greedy matching or caliper matching, random selection is competitive with other options.
+- Optimal matching is pretty comparable to nearest neighbor matching with random selection order, and in fact, it's not clearly any better than that approach.
+
+
+# Feinstein's Model for Research Architecture (expanded by Neal Dawson)
+
+---
+
+![](c05/figures/dawson_1.png){width=90%}
+
+---
+
+![](c05/figures/dawson_2.png){width=90%}
+
+---
+
+![](c05/figures/dawson_3.png){width=90%}
+
+---
+
+![](c05/figures/dawson_4.png){width=90%}
+
+---
+
+![](c05/figures/dawson_5.png){width=90%}
+
+---
+
+![](c05/figures/dawson_6.png){width=90%}
+
+---
+
+![](c05/figures/dawson_7.png){width=90%}
+
+---
+
+![](c05/figures/dawson_8.png){width=90%}
+
 
 # Designing Observational Studies (Rubin 2001)
 
@@ -451,88 +552,6 @@ Why doesn't this introduce a bias for our eventual conclusions and analytic resu
 
 Remember, these outcomes are never seen during the design process.
 
-## Survey for OSIA presentations
-
-See our README for details.
-
-## How did Lab 3 go?
-
-Answer Sketch will be posted to our Shared Drive by class time.
-
-# Walking Through A Paper: What To Look For
-
----
-
-![](c06/figures/kubo1.png)
-
-## Kubo et al. (2020) Paper
-
-Effects of preoperative low-intensity training with slow movement on early quadriceps weakness after total knee arthroplasty in patients with knee osteoarthritis: a retrospective propensity score-matched study
-
-- **Population**
-- **Outcome**
-- **Treatment**
-- **Covariates**
-
-## Key Words and Abbreviations
-
-Key Words (from Abstract): Exercise preconditioning, Ischemic preconditioning, Ischemia-reperfusion injury, Knee swelling, Low-intensity training, Prehabilitation, Quadriceps weakness, Slow movement, Thigh swelling, Total knee arthroplasty
-
-Abbreviations
-
-TKA: Total knee arthroplasty; QW: Quadriceps weakness; IR: Ischemiareperfusion;
-IPC: Ischemic preconditioning; EPC: Exercise preconditioning;
-LST: Low-intensity resistance exercise with slow movement and tonic force
-generation; QST: Quadriceps strength test; TUG: Timed up and go test;
-SCT: Stair climb test; JKOM: Japanese Knee Osteoarthritis Measure; VAS: Visual
-analog scale; SMD: Standardized mean difference
-
-## Background
-
-Background: Severe and early quadriceps weakness (QW) after total knee arthroplasty (TKA), which is caused by acute inflammation resulting from surgical trauma and tourniquet-induced ischemia-reperfusion (IR) injury, can be especially problematic. We focused on tourniquet-induced IR injury, because it has been shown to be preventable through ischemic and exercise preconditioning. Low-intensity resistance exercise with slow movement and tonic force generation (LST) share some similarities with ischemic and exercise preconditioning. The present study primarily aimed to clarify the efficacy of preoperative LST program as prehabilitation for early QW among patients with TKA using propensity score matching analysis.
-
-## Methods
-
-Methods: This single-center retrospective observational study used data from patients with knee osteoarthritis (n = 277) who were scheduled to undergo unilateral TKA between August 2015 and January 2017. Those with missing outcome data due to their inability to perform tests were excluded. The LST group included participants who performed LST and aerobic exercise (LST session) more than seven times for three months prior to surgery. The control group included participants who performed less than eight LST sessions, a general and light exercise or had
-no exercise for three months prior to surgery. Knee circumference, thigh volume, knee pain during quadriceps strength test (QST) and timed up and go test (TUG), quadriceps strength, and TUG were measured before and 4 days after surgery. Knee swelling, thigh swelling, $\Delta$knee pain, QW, and $\Delta$TUG were determined by comparing pre- and postoperative measurements.
-
-## Check 1
-
-Can we describe the ...
-
-- Population
-- Outcome
-- Treatment
-- Covariates
-
-## Statistical Analysis Section (Start)
-
-Statistical analysis was conducted using the IBM SPSS version 26 statistical software package (IBM Corp., Armonk, N.Y., USA). Participants were divided into the LST group and control group. The LST group included participants who performed category 1 sessions (LST and aerobic exercise) more than seven times for three months prior to surgery. The control group included participants who performed less than eight category 1 sessions, category 2 sessions (a general and light exercise) or had no prehabilitation (no exercise) for three months prior to surgery. Propensity score matching was used to balance group characteristics that could affect the LST program's instructions and formulae. Propensity scores were estimated using a logistic regression model where treatment status was regressed on age, gender, body mass index, and preoperative measurements, including quadriceps strength of the affected leg, knee pain during the QST and TUG, the TUG, the SCT, and JKOM scores. Propensity scores were subsequently used to match participants on a one-to-one basis using the nearest-neighbor method without replacement and a caliper width of 0.2 standard deviations of the logit of the propensity score. ...
-
-## Figure 1 from Kubo et al. (2020)
-
-![](c06/figures/kubo2.png){width=85%}
-
-## Table 1 from Kubo et al. (2020)
-
-![](c06/figures/kubo3.png)
-
-
-## Study Limitations
-
-There are several limitations that need to be considered. First, the study included a small number of each group participants. Second, this was a single-center retrospective study; accounting for all unmeasured or unknown confounders affecting the outcomes was impossible, even after propensity score matching. Third, some variables remained imbalanced after propensity score
-matching. However, it is important to note that most imbalanced variables were worse in the LST group than that in the control group, suggesting that preoperative LST program may have improved early QW even in cases with relatively low physical function. Finally, given that QW was assessed only on postoperative day 4, it remains uncertain whether early QW suppression can optimize long-term postoperative recovery. In future, a large-scale multicenter randomized controlled trial with long-term follow up is needed to address these limitations. 
-
-## Results and Conclusions
-
-Results: Propensity score matching generated 41 matched pairs who had nearly balanced characteristics. The LST group had a significantly lower knee and thigh swelling, QW, and $\Delta$TUG compared to the control group (all, p < 0.05). No significant differences in $\Delta$knee pain during the QST and TUG were observed between both groups (both, p > 0.05).
-
-Abstract Conclusions: The present study demonstrated the beneficial effects of preoperative LST program on knee swelling, thigh swelling, QW, and walking disability immediately after TKA.
-
-### Conclusions Section (in the body of the paper)
-
-The present study showed that preoperative LST program exerted beneficial effects on knee and thigh swelling, QW, and walking disability immediately after TKA. Future research addressing the limitations of this study is nonetheless needed to confirm the validity of our findings.
-
 # Rosenbaum and Your Projects
 
 ## Rosenbaum, Chapter 5
@@ -568,8 +587,8 @@ The present study showed that preoperative LST program exerted beneficial effect
 
 ## Next Time
 
-Walking Through Analyses of the SUPPORT / Right Heart Catheterization Study
-
+1. Analyses of the SUPPORT / Right Heart Catheterization Study
+2. Walking through a paper: the Kuo et al 2020 study
 
 
 
